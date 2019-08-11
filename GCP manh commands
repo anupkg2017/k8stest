@@ -1,0 +1,190 @@
+
+docker ps 
+docker exec -it rubik container id bash
+cd /stacks/devlovr12o/devlovr12o-artifacts/components/deployment-omni-prod-ready-2.0.48.17
+/stacks/devlovr12o/devlovr12o/devlovr12o-artifacts/components/deployment-omni-prod-ready-2.0.48.17
+kubectl get pods 
+kubectl describe pod 
+kubectl     
+kubectl exec -it porch-0 bash
+./connect_mysql.sh 
+use default_inventory
+kubectl get pods -o wide 
+kubectl get pods -o yaml
+kubectl scale --replicas=0 deployment/com-manh-cp-inventory
+kubectl logs podname | tail -500f
+kubectl top nodes
+kubectl get pods -o wide | grep bc84cf0e-7hnt
+
+
+kubectl get pod -o wide | grep 10.20.27.5 
+XMX -> XMX+1 , XMX*2.5
+
+devl-omni-vpt-01-ops-rubik-driver
+
+select count(order_id),MIN(CREATED_TIMESTAMP),MAX(UPDATED_TIMESTAMP),MIN_FULFILLMENT_STATUS_ID  from ORD_ORDER where order_id like 'WOHA2US_4_%' group by MIN_FULFILLMENT_STATUS_ID;
+
+
+select count(order_id),MIN(CREATED_TIMESTAMP),MAX(UPDATED_TIMESTAMP),MIN_FULFILLMENT_STATUS_ID  from ORD_ORDER where CREATED_TIMESTAMP > '2019-07-30 02:36:31.559000' group by MIN_FULFILLMENT_STATUS_ID;
+
+select count(order_id) MIN_FULFILLMENT_STATUS_ID  from ORD_ORDER where order_id like '2019July30_3_%' group by MIN_FULFILLMENT_STATUS_ID;
+
+sudo su 
+
+ export PS1='Goodday >'
+
+ export PATH=$PATH:/home/sinarayanan/manh/apache-jmeter-5.1.1/bin
+
+ cd /home/sinarayanan/manh/performance-scripts/customer-order
+ 
+ nohup jmeter -n -t CreateCustomerOrder-2Lines-gcp.jmx &
+ 
+  
+
+ 
+ NodePort
+ If the nodes in your cluster have external IP addresses, find the external IP address of one of your nodes:
+
+kubectl get nodes --output wide
+The output shows the external IP addresses of your nodes:
+
+NAME          STATUS    ROLES     AGE    VERSION        EXTERNAL-IP
+gke-svc-...   Ready     none      1h     v1.9.7-gke.6   203.0.113.1
+Not all clusters have external IP addresses for nodes. For example, the nodes in private clusters do not have external IP addresses.
+
+Create a firewall rule to allow TCP traffic on your node port:
+
+gcloud compute firewall-rules create test-node-port --allow tcp:[NODE_PORT]
+where: [NODE_PORT] is the value of the nodePort field of your Service.
+
+Access your Service
+In your browser's address bar, enter [NODE_IP_ADDRESS]:[NODE_PORT].
+
+where:
+
+[NODE_IP_ADDRESS] is the external IP address of one of your nodes.
+[NODE_PORT] is your node port value.
+
+ClusterIP
+kubectl get service my-cip-service --output yaml
+The output shows a value for clusterIP.
+
+spec:
+  clusterIP: 10.59.241.241
+Make a note of your clusterIP value for later.
+
+Accessing your Service
+List your running Pods:
+
+kubectl get pods
+In the output, copy one of the Pod names that begins with my-deployment.
+
+NAME                               READY     STATUS    RESTARTS   AGE
+my-deployment-6897d9577c-7z4fv     1/1       Running   0          5m
+Get a shell into one of your running containers:
+
+kubectl exec -it [YOUR_POD_NAME] -- sh
+where [YOUR_POD_NAME] is the name of one of the Pods in my-deployment.
+
+In your shell, install curl:
+
+apk add --no-cache curl
+In the container, make a request to your Service by using your cluster IP address and port 80. Notice that 80 is the value of the port field of your Service. This is the port that you use as a client of the Service.
+
+curl [CLUSTER_IP]:80
+where [CLUSTER_IP] is the value of clusterIP in your Service.
+
+Your request is forwarded to one of the member Pods on TCP port 8080, which is the value of the targetPort field. Note that each of the Service's member Pods must have a container listening on port 8080.
+
+Loadbalancer
+When you create a Service of type LoadBalancer, a Google Cloud controller wakes up and configures a network load balancer. Wait a minute for the controller to configure the network load balancer and generate a stable IP address.
+
+View the Service:
+
+kubectl get service my-lb-service --output yaml
+The output shows a stable external IP address under loadBalancer:ingress:.
+
+...
+spec:
+  ...
+  ports:
+  - ...
+    port: 60000
+    protocol: TCP
+    targetPort: 50001
+  selector:
+    app: products
+    department: sales
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 203.0.113.10
+Access your Service
+Wait a few minutes for GKE to configure the load balancer   .
+
+In your browser's address bar, enter [LOAD_BALANCER_ADDRESS]:60000.
+
+where [LOAD_BALANCER_ADDRESS] is the external IP address of your load balancer.
+
+The response shows the output of hello-app:
+
+Hello, world!
+Version: 2.0.0
+Hostname: service-how-to-50001-644f8857c7-xxdwg
+Notice that the value of port in a Service is arbitrary. The preceding example demonstrates this by using a port value of 60000.
+
+
+
+docker exec -it postgres_items psql -U postgress -W postgress userdb 
+
+
+created a deplyment for postgress
+created PVC 
+created a clusterIP service
+
+create deployment for springdata
+created a loadbalancer for spring data
+
+
+Ingress
+
+Noraml: got to gitgub-kubernetes/ingress-nginx
+follow-mandatory and then specific
+
+Helm:
+    for installing 3rd party SW in k8 cluster
+    
+    go to helm installation
+    follow set up
+    curl
+    chmod
+    execution
+    
+    Helm _ Tiller
+    helm is cli
+    tiller is a pod in cluster
+    need RBAC
+    before helm init
+    create service account
+    kubectl create serviceaccount --namespace=kube-system tiller
+    kubectl create clusterrolebinding name --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+    helm init
+    
+    create ingress-service
+    which has rules
+    
+    got to services and access the ingress service url
+
+
+                
+                
+HTTPS: we need to buy a domain. configure the url with IP set up [loadbalancer IP], @ and www pointing to main one.
+Certificate Authority[LetsEncrypt] 
+Cert Manager -> can be installed via HELM
+2 objects involved-> Certificate , Object that tells about the details of the certificate to be obtained. The certificate will be stored in a secret.
+Issuer- tells Cert manager from where to get the certificate from.
+
+Certificate-> sets up the infra for responding for the challange
+gets the crtificate and stores in a secret
