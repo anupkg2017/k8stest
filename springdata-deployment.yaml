@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdata-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: springdata
+  template:
+    metadata:
+      labels:
+        component: springdata
+    spec:
+      containers:
+        - name: springdata
+          image: anupkg2017/k8sspringdata
+          ports:
+            - containerPort: 8080
+  

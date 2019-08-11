@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: springapp
+  template:
+    metadata:
+      labels:
+        component: springapp
+    spec:
+      containers:
+        - name: springboot
+          image: anupkg2017/springbootdocker:v1
+          ports:
+            - containerPort: 8080
