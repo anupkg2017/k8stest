@@ -139,7 +139,8 @@ Notice that the value of port in a Service is arbitrary. The preceding example d
 
 docker exec -it postgres_items psql -U postgress -W postgress userdb 
 
-
+create secret for postgress password
+kubectl create secret generic pgpassword(secretkeyrefname) --from-literal PGPASSWORD=postgres
 created a deplyment for postgress
 created PVC 
 created a clusterIP service
@@ -147,7 +148,8 @@ created a clusterIP service
 create deployment for springdata
 created a loadbalancer for spring data
 
-
+kubectl exec -it postgres-deployment-79d45ff857-z7nvf sh
+google to connect the db from shell 
 Ingress
 
 Noraml: got to gitgub-kubernetes/ingress-nginx
@@ -175,7 +177,7 @@ Helm:
     create ingress-service
     which has rules
     
-    got to services and access the ingress service url
+    got to services and access the ingress service url[ingress controller url or gcp controller url]
 
 
                 
